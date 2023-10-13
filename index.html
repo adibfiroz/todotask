@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Todo Task</title>
+        <script
+        type="module"
+        src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js"
+    ></script>
+    <script
+        nomodule
+        src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine-ie11.min.js"
+        defer
+    ></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    </head>
+    <body class=" bg-black">
+
+<div class="h-full text-white-800 p-4 lg:p-8" x-data="alpineInstance()" x-init="fetch('https://dummyjson.com/todos')
+           .then(response => response.json())
+           .then(data => todos = data.todos)">
+    <h1 class="mt-0 mb-3 text-white  text-3xl" x-text="title"><!-- title text --></h1>
+    <p class="text-xl text-white  mb-4" x-html="intro"><!-- intro text --></p>
+    
+    <div class="flex m-auto lg:w-3/4 lg:max-w-lg mt-4">
+        <input class="shadow appearance-none border rounded w-full py-2 px-3 mr-4 text-grey-darker"
+               placeholder="Add Todo" x-model="todoName">
+        <button class="border border-blue-800 font-bold bg-blue-800 text-white px-3 rounded-md"
+        x-on:click="add">
+          Add
+        </button>
+      </div>
+
+    
+    <table class="mt-6 border-separate text-white w-full border border-gray-700 rounded-md">
+        <thead class="block">
+            <tr>
+                <th class="w-32">Id</th>
+                <th class="w-40">todo</th>
+            </tr>
+        </thead>
+        <tbody>
+            <template x-for="(todo , index) in create" :key="index">
+                <tr class="border-t border-gray-700 block p-2">
+                    <td class="min-w-[7rem] text-center">
+                        <input type="checkbox"/>
+                    </td>
+                    <td class="font-medium text-xl truncate" x-text="todo.name"></td>
+                </tr>           
+            </template>
+            <template x-for="todo in todos" :key="todo.id">
+                <tr class="border-t border-gray-700 block p-2">
+                    <td class="min-w-[7rem] text-center">
+                        <input type="checkbox"/>
+                    </td>
+                    <td class="font-medium text-xl truncate" x-text="todo.todo"></td>
+                </tr>           
+            </template>
+        </tbody>
+    </table>
+    
+</div>
+        <script>
+            function alpineInstance() {
+                return {
+                    title: 'Welcome back!',
+                    intro: 'Here is a list of your tasks for this month!',
+                    todos: [],
+                    create: [],
+                    todoName: "",
+
+                    add() {
+
+                        this.create.push({
+                            name: this.todoName,
+                        });
+
+                        this.todoName = '';
+                    },
+                }
+            }
+        </script>
+    </body>
+</html>
